@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int         @id @default(autoincrement())
+  createdAt       DateTime    @default(now())
+  firstName       String
+  lastName        String
+  email           String      @unique
+  role            Role        @default(USER)
+  portfolios      Portfolio[]
+}
+
+model Portfolio {
+  id              Int         @id @default(autoincrement())
+  name            String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  author          User        @relation(fields: [authorId], references: [id])
+  authorId        Int
+  holdings        Holding[]
+}
+
+model Holding {
+  id              Int         @id @default(autoincrement())
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  ticker          String
+  quantity        Float
+  portfolio       Portfolio   @relation(fields: [portfolioId], references: [id])
+  portfolioId     Int
+}
+
+enum Role {
+  USER
+  ADMIN
+}
