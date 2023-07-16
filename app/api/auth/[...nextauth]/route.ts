@@ -3,11 +3,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import type { NextAuthOptions } from "next-auth";
 import { compare, hash } from "bcrypt";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
+const crypto = require("crypto");
 
 const prisma = new PrismaClient();
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
@@ -33,6 +34,7 @@ const handler = NextAuth({
         });
 
         if (!user) {
+          console.log("User not found");
           const newUser = await prisma.user.create({
             data: {
               email,
@@ -46,10 +48,12 @@ const handler = NextAuth({
           };
         }
 
+        console.log("User found");
         const isValid = await compare(password, user.passwordHash);
 
         if (!isValid) {
-          throw new Error("Wrong credentials. Try again.");
+          console.log("Invalid credentials");
+          return null;
         }
 
         return user;
@@ -57,6 +61,9 @@ const handler = NextAuth({
     }),
   ],
   adapter: PrismaAdapter(prisma),
-});
+  debug: true,
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
