@@ -3,7 +3,7 @@ import { GetServerSideProps } from "next";
 import prisma from "@/lib/prisma";
 import { Portfolio } from "@prisma/client";
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 export const getPortfolios = async () => {
   const portfolios = prisma.portfolio.findMany({

@@ -5,10 +5,11 @@ import { compare, hash } from "bcrypt";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient, Prisma } from "@prisma/client";
 const crypto = require("crypto");
+import { authOptions } from "@/lib/auth";
 
 const prisma = new PrismaClient();
 
-export const authOptions: NextAuthOptions = {
+/* export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
@@ -62,7 +63,7 @@ export const authOptions: NextAuthOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   debug: true,
-};
+}; */
 
 const handler = NextAuth(authOptions);
 
