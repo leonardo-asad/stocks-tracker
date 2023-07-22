@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const LoginButton = () => {
   return (
-    <button style={{ marginRight: 10 }} onClick={() => signIn()}>
+    <button style={{ marginRight: 10 }} onClick={() => signIn("credentials", { callbackUrl: 'http://localhost:3000/dashboard' })}>
       Sign in
     </button>
   );

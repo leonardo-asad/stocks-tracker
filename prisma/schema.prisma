@@ -65,15 +65,19 @@ model Portfolio {
   updatedAt       DateTime    @updatedAt
   author          User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId        String
-  holdings        Holding[]
+  transactions    Transaction[]
 }
 
-model Holding {
+model Transaction {
   id              String      @id @default(cuid())
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
+  action          String
   ticker          String
   quantity        Float
+  price           Float
+  currency        String      @default("USD")
+  commission      Float       @default(0.0)
   portfolio       Portfolio   @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
   portfolioId     String
 }
