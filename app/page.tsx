@@ -1,4 +1,4 @@
-import { LoginButton, LogoutButton, ProfileButton, RegisterButton } from "@/components/button.components";
+import { LoginButton, LogoutButton, ProfileButton, RegisterButton, DashboardButton } from "@/components/button.components";
 
 
 export default async function Home() {
@@ -9,6 +9,7 @@ export default async function Home() {
       <RegisterButton />
       <LogoutButton />
       <ProfileButton />
+      <DashboardButton />
     </div>
   );
 }
