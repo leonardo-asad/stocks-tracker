@@ -1,4 +1,6 @@
-import Drawer from "@/components/drawer";
+import Navbar from "@/components/navbar";
+import Sidebar from "@/components/sidebar";
+import BottomNavigation from "@/components/bottom.navigation";
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
@@ -8,9 +10,11 @@ export default function DashboardLayout({
   return (
     <section>
       {/* Include shared UI here e.g. a header or sidebar */}
-      <Drawer />
+      <Navbar />
+      <Sidebar />
 
       {children}
+      <BottomNavigation />
     </section>
   );
 }
