@@ -1,9 +1,9 @@
-import Drawer from "@/components/drawer"
+import Drawer from "@/components/drawer";
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <section>
@@ -12,5 +12,5 @@ export default function DashboardLayout({
 
       {children}
     </section>
-  )
+  );
 }
