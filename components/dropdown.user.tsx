@@ -1,9 +1,12 @@
 "use client";
 import { useState } from "react";
 import clsx from "clsx";
+import { useSession } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 
-export default function DropdownUser() {
+export function DropdownUser({ children }: { children: React.ReactNode }) {
   const [openUserMenu, setOpenUserMenu] = useState(false);
+  const { data: session, status, update } = useSession();
 
   return (
     <div className="flex items-center relative">
@@ -17,11 +20,19 @@ export default function DropdownUser() {
             data-dropdown-toggle="dropdown-user"
           >
             <span className="sr-only">Open user menu</span>
-            <img
-              className="w-8 h-8 rounded-full"
-              src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-              alt="user photo"
-            />
+            {session?.user?.image ? (
+              <img
+                className="w-8 h-8 rounded-full"
+                src={session?.user?.image}
+                alt="user photo"
+              />
+            ) : (
+              <img
+                className="w-8 h-8 rounded-full"
+                src="/user-icon.jpg"
+                alt="user photo"
+              />
+            )}
           </button>
         </div>
         <div
@@ -32,17 +43,7 @@ export default function DropdownUser() {
             openUserMenu ? "block" : "hidden"
           )}
         >
-          <div className="px-4 py-3" role="none">
-            <p className="text-sm text-gray-900 dark:text-white" role="none">
-              Neil Sims
-            </p>
-            <p
-              className="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
-              role="none"
-            >
-              neil.sims@flowbite.com
-            </p>
-          </div>
+          {children}
           <ul className="py-1" role="none">
             <li>
               <a
@@ -63,13 +64,13 @@ export default function DropdownUser() {
               </a>
             </li>
             <li>
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+              <button
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left"
                 role="menuitem"
+                onClick={() => signOut()}
               >
                 Sign out
-              </a>
+              </button>
             </li>
           </ul>
         </div>
