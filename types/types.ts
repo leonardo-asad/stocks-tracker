@@ -1,31 +1,9 @@
-export type Role = "USER" | "ADMIN";
+import { Prisma } from "@prisma/client";
 
-export interface User {
-  id: number;
-  createdAt: Date;
-  firstName: String;
-  lastName: String;
-  email: String;
-  role: Role;
-  portfolios: Portfolio[];
-}
+const createPortfolioForm = Prisma.validator<Prisma.PortfolioArgs>()({
+  select: { name: true, authorId: true },
+});
 
-export interface Portfolio {
-  id: number;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-  author: User;
-  authorId: number;
-  holdings: Holding[];
-}
-
-export interface Holding {
-  id: number;
-  createdAt: Date;
-  updatedAt: Date;
-  ticker: string;
-  quantity: number;
-  portfolio: Portfolio;
-  portfolioId: number;
-}
+export type PortfolioForm = Prisma.PortfolioGetPayload<
+  typeof createPortfolioForm
+>;
