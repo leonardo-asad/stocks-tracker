@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import { signIn, signOut } from "next-auth/react";
 
-export function DropdownUser({ children }: { children: React.ReactNode }) {
+export const DropdownUser = ({ children }: { children: React.ReactNode }) => {
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const { data: session, status, update } = useSession();
 
@@ -77,4 +77,4 @@ export function DropdownUser({ children }: { children: React.ReactNode }) {
       </div>
     </div>
   );
-}
+};

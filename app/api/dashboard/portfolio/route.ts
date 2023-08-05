@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { PortfolioForm } from "@/types/types";
 import { zfd } from "zod-form-data";
+import { Prisma } from "@prisma/client";
 
 export const getPortfolios = async (authorId: string) => {
   const portfolios = prisma.portfolio.findMany({
@@ -64,7 +65,7 @@ export async function GET() {
 
   const portfolios = await getPortfolios(session.user.id);
 
-  return NextResponse.json(portfolios);
+  return NextResponse.json({ message: "This is JSON" });
 }
 
 export async function POST(request: NextRequest) {
