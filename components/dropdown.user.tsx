@@ -1,12 +1,16 @@
 "use client";
+
 import { useState } from "react";
 import clsx from "clsx";
-import { useSession } from "next-auth/react";
 import { signIn, signOut } from "next-auth/react";
 
-export const DropdownUser = ({ children }: { children: React.ReactNode }) => {
+interface Props {
+  image?: string;
+  children: React.ReactNode;
+}
+
+export const DropdownUser = ({ image, children }: Props) => {
   const [openUserMenu, setOpenUserMenu] = useState(false);
-  const { data: session, status, update } = useSession();
 
   return (
     <div className="flex items-center relative">
@@ -20,10 +24,10 @@ export const DropdownUser = ({ children }: { children: React.ReactNode }) => {
             data-dropdown-toggle="dropdown-user"
           >
             <span className="sr-only">Open user menu</span>
-            {session?.user?.image ? (
+            {image ? (
               <img
                 className="w-8 h-8 rounded-full"
-                src={session?.user?.image}
+                src={image}
                 alt="user photo"
               />
             ) : (

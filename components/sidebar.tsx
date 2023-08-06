@@ -1,21 +1,10 @@
-async function getPortfolios() {
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/dashboard/portfolio/`
-  );
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
+import { Portfolio } from "@prisma/client";
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
+interface Props {
+  portfolios: Portfolio[];
 }
 
-export default async function Sidebar() {
-  const portfolios = await getPortfolios();
-
+export default function Sidebar({ portfolios }: Props) {
   console.log("Portfolio List: ", portfolios);
 
   return (
