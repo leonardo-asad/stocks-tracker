@@ -18,6 +18,9 @@ export async function POST(req: Request) {
         lastName,
         email: email.toLowerCase(),
         passwordHash,
+        portfolios: {
+          create: [{ name: "My Portfolio" }],
+        },
       },
     });
 

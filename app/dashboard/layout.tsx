@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getPortfolios } from "@/lib/portfolio";
+import { SidebarLinks } from "@/components/sidebar.links";
 
 export default async function DashboardLayout({
   children, // will be a page or nested layout
@@ -29,7 +30,9 @@ export default async function DashboardLayout({
           <UserData name={session.user.name} email={session.user.email} />
         </DropdownUser>
       </Navbar>
-      <Sidebar portfolios={portfolios} />
+      <Sidebar>
+        <SidebarLinks portfolios={portfolios} />
+      </Sidebar>
       {children}
       <BottomNavigation />
     </section>
