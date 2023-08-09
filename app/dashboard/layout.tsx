@@ -25,7 +25,7 @@ export default async function DashboardLayout({
   return (
     <section>
       {/* Include shared UI here e.g. a header or sidebar */}
-      <Navbar>
+      {/* <Navbar>
         <DropdownUser image={session.user.image}>
           <UserData name={session.user.name} email={session.user.email} />
         </DropdownUser>
@@ -34,7 +34,8 @@ export default async function DashboardLayout({
         <SidebarLinks portfolios={portfolios} />
       </Sidebar>
       {children}
-      <BottomNavigation />
+      <BottomNavigation /> */}
+      {children}
     </section>
   );
 }
