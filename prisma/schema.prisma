@@ -48,9 +48,10 @@ model VerificationToken {
 model User {
   id           String      @id @default(cuid())
   createdAt    DateTime    @default(now())
-  firstName    String?
-  lastName     String?
+  firstName    String
+  lastName     String
   email        String      @unique
+  image        String?
   passwordHash String
   role         Role        @default(USER)
   portfolios   Portfolio[]

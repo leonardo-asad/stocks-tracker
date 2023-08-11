@@ -24,6 +24,8 @@ export default async function DashboardLayout({
     redirect("/api/auth/signin");
   }
 
+  console.log("Session: ", session);
+
   const portfolios = await getPortfolios(session.user.id);
 
   return (
@@ -35,7 +37,12 @@ export default async function DashboardLayout({
             <MainNav className="mx-6" />
             <div className="ml-auto flex items-center space-x-4">
               <Search />
-              <UserNav />
+              <UserNav
+                image={session.user.image}
+                email={session.user.email}
+                firstName={session.user.firstName}
+                lastName={session.user.lastName}
+              />
             </div>
           </div>
         </div>
