@@ -8,6 +8,10 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getPortfolios } from "@/lib/portfolio";
 import { SidebarLinks } from "@/components/sidebar.links";
+import { Search } from "@/components/search";
+import PortfolioSwitcher from "@/components/portfolio-switcher";
+import { UserNav } from "@/components/user-nav";
+import { MainNav } from "@/components/main-nav";
 
 export default async function DashboardLayout({
   children, // will be a page or nested layout
@@ -24,18 +28,19 @@ export default async function DashboardLayout({
 
   return (
     <section>
-      {/* Include shared UI here e.g. a header or sidebar */}
-      {/* <Navbar>
-        <DropdownUser image={session.user.image}>
-          <UserData name={session.user.name} email={session.user.email} />
-        </DropdownUser>
-      </Navbar>
-      <Sidebar>
-        <SidebarLinks portfolios={portfolios} />
-      </Sidebar>
-      {children}
-      <BottomNavigation /> */}
-      {children}
+      <div className="hidden flex-col md:flex">
+        <div className="border-b">
+          <div className="flex h-16 items-center px-4">
+            <PortfolioSwitcher portfolios={portfolios} />
+            <MainNav className="mx-6" />
+            <div className="ml-auto flex items-center space-x-4">
+              <Search />
+              <UserNav />
+            </div>
+          </div>
+        </div>
+        {children}
+      </div>
     </section>
   );
 }

@@ -11,11 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 
-export function UserNav() {
-  return <div></div>;
-}
-
 /* export function UserNav() {
+  return <div></div>;
+} */
+
+export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -59,4 +59,4 @@ export function UserNav() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-} */
+}
