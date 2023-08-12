@@ -39,6 +39,7 @@ import {
   SelectValue,
 } from "./select";
 import { Portfolio } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -54,9 +55,15 @@ export default function PortfolioSwitcher({
 }: PortfolioSwitcherProps) {
   const [open, setOpen] = React.useState(false);
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
-  const [selectedPortfolio, setSelectedPortfolio] = React.useState<Portfolio>(
-    portfolios[0]
-  );
+  const [selectedPortfolio, setSelectedPortfolio] =
+    React.useState<Portfolio | null>(null);
+  const router = useRouter();
+
+  function getPortfolioInitial(name: string) {
+    const words = name.split(" ");
+    const initials = words.map((word) => word.charAt(0).toUpperCase()).join("");
+    return initials;
+  }
 
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
@@ -72,11 +79,21 @@ export default function PortfolioSwitcher({
             <Avatar className="mr-2 h-5 w-5">
               <AvatarImage
                 src={"avatars/acme-inc.png"}
-                alt={selectedPortfolio.name}
+                alt={
+                  selectedPortfolio === null
+                    ? "All Portfolios"
+                    : selectedPortfolio.name
+                }
               />
-              <AvatarFallback>SC</AvatarFallback>
+              <AvatarFallback>
+                {selectedPortfolio === null
+                  ? "AP"
+                  : getPortfolioInitial(selectedPortfolio.name)}
+              </AvatarFallback>
             </Avatar>
-            {selectedPortfolio.name}
+            {selectedPortfolio === null
+              ? "All Portfolios"
+              : selectedPortfolio.name}
             <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -85,6 +102,33 @@ export default function PortfolioSwitcher({
             <CommandList>
               <CommandInput placeholder="Search team..." />
               <CommandEmpty>No team found.</CommandEmpty>
+              <CommandGroup heading="All">
+                <CommandItem
+                  onSelect={() => {
+                    setSelectedPortfolio(null);
+                    setOpen(false);
+                    router.push(`/dashboard`);
+                  }}
+                  className="text-sm"
+                >
+                  <Avatar className="mr-2 h-5 w-5">
+                    <AvatarImage
+                      src={"avatars/acme-inc.png"}
+                      alt="all portfolios"
+                      className="grayscale"
+                    />
+                    <AvatarFallback>AP</AvatarFallback>
+                  </Avatar>
+                  All Portfolios
+                  <CheckIcon
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      selectedPortfolio === null ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              </CommandGroup>
+
               <CommandGroup heading="Portfolio List">
                 {portfolios.map((portfolio) => (
                   <CommandItem
@@ -92,6 +136,7 @@ export default function PortfolioSwitcher({
                     onSelect={() => {
                       setSelectedPortfolio(portfolio);
                       setOpen(false);
+                      router.push(`/dashboard/${portfolio.id}`);
                     }}
                     className="text-sm"
                   >
@@ -101,13 +146,15 @@ export default function PortfolioSwitcher({
                         alt={portfolio.name}
                         className="grayscale"
                       />
-                      <AvatarFallback>SC</AvatarFallback>
+                      <AvatarFallback>
+                        {getPortfolioInitial(portfolio.name)}
+                      </AvatarFallback>
                     </Avatar>
                     {portfolio.name}
                     <CheckIcon
                       className={cn(
                         "ml-auto h-4 w-4",
-                        selectedPortfolio.name === portfolio.name
+                        selectedPortfolio?.name === portfolio.name
                           ? "opacity-100"
                           : "opacity-0"
                       )}

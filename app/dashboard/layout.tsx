@@ -12,6 +12,8 @@ import { Search } from "@/components/search";
 import PortfolioSwitcher from "@/components/portfolio-switcher";
 import { UserNav } from "@/components/user-nav";
 import { MainNav } from "@/components/main-nav";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default async function DashboardLayout({
   children, // will be a page or nested layout
@@ -46,7 +48,7 @@ export default async function DashboardLayout({
             </div>
           </div>
         </div>
-        {children}
+        <Suspense fallback={<Loading />}>{children}</Suspense>
       </div>
     </section>
   );
