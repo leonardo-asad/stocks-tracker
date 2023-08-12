@@ -11,13 +11,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs";
 import { CalendarDateRangePicker } from "@/components/date-range-picker";
 import { Overview } from "@/components/overview";
 import { RecentSales } from "@/components/recent-sales";
+import { getPortfolioData } from "@/lib/portfolio";
+import { getStockAggregates } from "@/lib/polygon-io";
 
 export const metadata: Metadata = {
   title: "Dashboard",
   description: "Example dashboard app built using the components.",
 };
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const data = await getPortfolioData();
+  console.log("data: ", data);
+
+  /* const aggregates = await getStockAggregates(
+    "AAPL",
+    "2023-01-01",
+    "2023-05-01"
+  );
+  console.log(aggregates); */
+
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
