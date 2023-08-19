@@ -26,7 +26,7 @@ export default async function DashboardLayout({
     redirect("/api/auth/signin");
   }
 
-  console.log("Session: ", session);
+  //console.log("Session: ", session);
 
   const portfolios = await getPortfolios(session.user.id);
 

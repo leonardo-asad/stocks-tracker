@@ -4,6 +4,10 @@ import { authOptions } from "@/lib/auth";
 import { zfd } from "zod-form-data";
 import { createPortfolio } from "@/lib/portfolio";
 
+export async function GET() {
+  return NextResponse.json({ message: "Hello Dashboard" });
+}
+
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
@@ -13,6 +17,8 @@ export async function POST(request: NextRequest) {
       { status: 401 }
     );
   }
+
+  console.log("Request form data: ", await request.formData());
 
   const authorId = session.user.id;
 

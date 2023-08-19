@@ -31,13 +31,6 @@ import {
 import { Input } from "./input";
 import { Label } from "./label";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./select";
 import { Portfolio } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
@@ -57,12 +50,35 @@ export default function PortfolioSwitcher({
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
   const [selectedPortfolio, setSelectedPortfolio] =
     React.useState<Portfolio | null>(null);
+  const [portfolioName, setPortfolioName] = React.useState("");
   const router = useRouter();
 
   function getPortfolioInitial(name: string) {
     const words = name.split(" ");
     const initials = words.map((word) => word.charAt(0).toUpperCase()).join("");
     return initials;
+  }
+
+  async function handleSubmit() {
+    console.log("Click client side");
+    if (portfolioName === "") {
+      return alert("Empty name is not valid");
+    }
+
+    try {
+      /* const res = await fetch("http://localhost:3000/api/dashboard/portfolio", {
+        method: "post",
+        body: JSON.stringify({ name: portfolioName }),
+      }); */
+
+      const res = await fetch("http://localhost:3000/api/dashboard/portfolio");
+
+      const json = await res.json();
+
+      console.log("Response: ", json);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -174,7 +190,7 @@ export default function PortfolioSwitcher({
                     }}
                   >
                     <PlusCircledIcon className="mr-2 h-5 w-5" />
-                    Create Team
+                    Create Portfolio
                   </CommandItem>
                 </DialogTrigger>
               </CommandGroup>
@@ -184,38 +200,21 @@ export default function PortfolioSwitcher({
       </Popover>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create team</DialogTitle>
+          <DialogTitle>Create Portfolio</DialogTitle>
           <DialogDescription>
-            Add a new team to manage products and customers.
+            Add a new portfolio to track your financial assets.
           </DialogDescription>
         </DialogHeader>
         <div>
           <div className="space-y-4 py-2 pb-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Team name</Label>
-              <Input id="name" placeholder="Acme Inc." />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="plan">Subscription plan</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a plan" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="free">
-                    <span className="font-medium">Free</span> -{" "}
-                    <span className="text-muted-foreground">
-                      Trial for two weeks
-                    </span>
-                  </SelectItem>
-                  <SelectItem value="pro">
-                    <span className="font-medium">Pro</span> -{" "}
-                    <span className="text-muted-foreground">
-                      $9/month per user
-                    </span>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="name">Portfolio name</Label>
+              <Input
+                id="name"
+                placeholder="Equity, Bonds, Growth, etc.."
+                value={portfolioName}
+                onChange={(e) => setPortfolioName(e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -223,7 +222,7 @@ export default function PortfolioSwitcher({
           <Button variant="outline" onClick={() => setShowNewTeamDialog(false)}>
             Cancel
           </Button>
-          <Button type="submit">Continue</Button>
+          <Button onClick={() => handleSubmit()}>Continue</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
