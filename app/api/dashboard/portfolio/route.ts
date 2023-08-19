@@ -18,8 +18,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  console.log("Request form data: ", await request.formData());
-
   const authorId = session.user.id;
 
   const schema = zfd.formData({
