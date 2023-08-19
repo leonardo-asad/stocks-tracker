@@ -47,11 +47,17 @@ export default function PortfolioSwitcher({
   portfolios,
 }: PortfolioSwitcherProps) {
   const [open, setOpen] = React.useState(false);
-  const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
+  const [showNewPortfolioDialog, setShowNewPortfolioDialog] =
+    React.useState(false);
+  const [portfolioList, setPortfolioList] = React.useState(portfolios);
   const [selectedPortfolio, setSelectedPortfolio] =
     React.useState<Portfolio | null>(null);
   const [portfolioName, setPortfolioName] = React.useState("");
   const router = useRouter();
+
+  React.useEffect(() => {
+    setPortfolioList(portfolios);
+  }, [portfolios]);
 
   function getPortfolioInitial(name: string) {
     const words = name.split(" ");
@@ -66,23 +72,29 @@ export default function PortfolioSwitcher({
     }
 
     try {
-      /* const res = await fetch("http://localhost:3000/api/dashboard/portfolio", {
+      const data = new FormData();
+      data.append("name", portfolioName);
+
+      const res = await fetch("http://localhost:3000/api/dashboard/portfolio", {
         method: "post",
-        body: JSON.stringify({ name: portfolioName }),
-      }); */
+        body: data,
+      });
 
-      const res = await fetch("http://localhost:3000/api/dashboard/portfolio");
+      const newPortfolio = await res.json();
+      //console.log("Response: ", newPortfolio);
 
-      const json = await res.json();
-
-      console.log("Response: ", json);
+      portfolioList.push(newPortfolio);
+      setShowNewPortfolioDialog(false);
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
+    <Dialog
+      open={showNewPortfolioDialog}
+      onOpenChange={setShowNewPortfolioDialog}
+    >
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -186,7 +198,7 @@ export default function PortfolioSwitcher({
                   <CommandItem
                     onSelect={() => {
                       setOpen(false);
-                      setShowNewTeamDialog(true);
+                      setShowNewPortfolioDialog(true);
                     }}
                   >
                     <PlusCircledIcon className="mr-2 h-5 w-5" />
@@ -219,7 +231,10 @@ export default function PortfolioSwitcher({
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setShowNewTeamDialog(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setShowNewPortfolioDialog(false)}
+          >
             Cancel
           </Button>
           <Button onClick={() => handleSubmit()}>Continue</Button>
