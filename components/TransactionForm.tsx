@@ -3,6 +3,7 @@
 import type { Holdings } from "@/types/types";
 import { addTransaction } from "@/app/actions/transaction";
 import { useState } from "react";
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 
 export default function TransactionForm({
   portfolioId,
@@ -11,26 +12,48 @@ export default function TransactionForm({
   portfolioId: string;
   holdings: Holdings;
 }) {
+  const { pending } = useFormStatus();
   const [message, setMessage] = useState<string>("");
 
   async function onCreateTransaction(formData: FormData) {
     const res = await addTransaction(formData, portfolioId, holdings);
     setMessage(res.message);
+    const transactionForm = document.getElementById(
+      "transaction-form"
+    ) as HTMLFormElement;
+    if (res.message === "Success!") {
+      transactionForm.reset();
+    }
   }
 
   return (
-    <form action={onCreateTransaction}>
+    <form id="transaction-form" action={onCreateTransaction}>
       <div className="my-2">
         <label className="mr-2">Ticker: </label>
-        <input className="ring-1 rounded-md" type="text" name="ticker" />
+        <input
+          className="ring-1 rounded-md"
+          type="text"
+          name="ticker"
+          required
+        />
       </div>
       <div className="my-2">
         <label className="mr-2">Quantity: </label>
-        <input type="number" name="quantity" className="ring-1 rounded-md" />
+        <input
+          type="number"
+          name="quantity"
+          className="ring-1 rounded-md"
+          required
+        />
       </div>
       <div className="my-2">
         <label className="mr-2">Price: </label>
-        <input type="number" name="price" className="ring-1 rounded-md" />
+        <input
+          type="number"
+          name="price"
+          className="ring-1 rounded-md"
+          required
+        />
       </div>
       <div className="my-2">
         <label className="mr-2">Action: </label>
@@ -39,6 +62,7 @@ export default function TransactionForm({
           name="action"
           defaultValue={"BUY"}
           className="ring-1 rounded-md"
+          required
         />
       </div>
       <div className="my-2">
@@ -48,6 +72,7 @@ export default function TransactionForm({
           name="currency"
           defaultValue={"USD"}
           className="ring-1 rounded-md"
+          required
         />
       </div>
       <div className="my-2">
@@ -57,11 +82,16 @@ export default function TransactionForm({
           name="commission"
           defaultValue={0}
           className="ring-1 rounded-md"
+          required
         />
       </div>
 
-      <button type="submit" className="bg-slate-300 px-5 py-2 rounded-md">
-        Submit
+      <button
+        disabled={pending}
+        type="submit"
+        className="bg-slate-300 px-5 py-2 rounded-md"
+      >
+        {pending ? "Submitting..." : "Submit"}
       </button>
       <p>{message}</p>
     </form>
