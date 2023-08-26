@@ -1,72 +1,69 @@
-import { createTransaction } from "@/lib/transaction";
-import { revalidatePath } from "next/cache";
+"use client";
+
+import type { Holdings } from "@/types/types";
+import { addTransaction } from "@/app/actions/transaction";
+import { useState } from "react";
 
 export default function TransactionForm({
   portfolioId,
+  holdings,
 }: {
   portfolioId: string;
+  holdings: Holdings;
 }) {
-  async function addTransaction(formData: FormData) {
-    "use server";
+  const [message, setMessage] = useState<string>("");
 
-    const ticker = formData.get("ticker") as string;
-    const quantity = parseInt(formData.get("quantity") as string);
-    const price = parseFloat(formData.get("price") as string);
-    const action = formData.get("action") as string;
-    const currency = formData.get("currency") as string;
-    const commission = parseFloat(formData.get("commission") as string);
-
-    if (
-      portfolioId !== null &&
-      ticker !== null &&
-      quantity !== null &&
-      price !== null &&
-      action !== null &&
-      currency !== null &&
-      commission !== null
-    ) {
-      await createTransaction({
-        ticker,
-        quantity,
-        price,
-        action,
-        currency,
-        commission,
-        portfolioId,
-      });
-
-      revalidatePath("/dashboard/[id]");
-    }
+  async function onCreateTransaction(formData: FormData) {
+    const res = await addTransaction(formData, portfolioId, holdings);
+    setMessage(res.message);
   }
 
   return (
-    <form action={addTransaction}>
-      <div>
-        <label>Ticker: </label>
-        <input type="text" name="ticker" />
+    <form action={onCreateTransaction}>
+      <div className="my-2">
+        <label className="mr-2">Ticker: </label>
+        <input className="ring-1 rounded-md" type="text" name="ticker" />
       </div>
-      <div>
-        <label>Quantity: </label>
-        <input type="number" name="quantity" />
+      <div className="my-2">
+        <label className="mr-2">Quantity: </label>
+        <input type="number" name="quantity" className="ring-1 rounded-md" />
       </div>
-      <div>
-        <label>Price: </label>
-        <input type="number" name="price" />
+      <div className="my-2">
+        <label className="mr-2">Price: </label>
+        <input type="number" name="price" className="ring-1 rounded-md" />
       </div>
-      <div>
-        <label>Action: </label>
-        <input type="string" name="action" defaultValue={"BUY"} />
+      <div className="my-2">
+        <label className="mr-2">Action: </label>
+        <input
+          type="string"
+          name="action"
+          defaultValue={"BUY"}
+          className="ring-1 rounded-md"
+        />
       </div>
-      <div>
-        <label>Currency: </label>
-        <input type="text" name="currency" defaultValue={"USD"} />
+      <div className="my-2">
+        <label className="mr-2">Currency: </label>
+        <input
+          type="text"
+          name="currency"
+          defaultValue={"USD"}
+          className="ring-1 rounded-md"
+        />
       </div>
-      <div>
-        <label>Commission: </label>
-        <input type="number" name="commission" defaultValue={0} />
+      <div className="my-2">
+        <label className="mr-2">Commission: </label>
+        <input
+          type="number"
+          name="commission"
+          defaultValue={0}
+          className="ring-1 rounded-md"
+        />
       </div>
 
-      <button type="submit">Submit</button>
+      <button type="submit" className="bg-slate-300 px-5 py-2 rounded-md">
+        Submit
+      </button>
+      <p>{message}</p>
     </form>
   );
 }
