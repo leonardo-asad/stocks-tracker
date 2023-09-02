@@ -5,11 +5,19 @@ import { Transaction } from "@prisma/client";
 
 export default async function DashboardPage({
   params,
+  searchParams,
 }: {
   params: { id: string };
+  searchParams: { page?: string; limit?: string };
 }) {
+  //pagination
+  const page = searchParams.page ? Number(searchParams.page) : 1;
+
+  console.log("page: ", page);
+  const limit = 10;
+
   const portfolioId = params.id as string;
-  const transactions = await getTransactions(portfolioId);
+  const transactions = await getTransactions(portfolioId, page, limit);
   const holdings = await getHoldings(portfolioId);
 
   interface Column {
@@ -55,7 +63,13 @@ export default async function DashboardPage({
       <br />
       <h3 className="font-bold">Transactions</h3>
       <br />
-      <DataGrid columns={columns} rows={getRows(transactions)} />
+      <DataGrid
+        columns={columns}
+        rows={getRows(transactions)}
+        portfolioId={portfolioId}
+        page={page}
+        limit={limit}
+      />
 
       <br />
       <h3 className="font-bold">Add transaction</h3>

@@ -1,4 +1,5 @@
 import Date from "./date";
+import Link from "next/link";
 
 interface Column {
   id: string;
@@ -10,9 +11,18 @@ type Row = Record<string, string | number | Date>;
 interface Props {
   columns: Column[];
   rows: Row[];
+  portfolioId: string;
+  page: number;
+  limit: number;
 }
 
-export default function DataGrid({ columns, rows }: Props) {
+export default function DataGrid({
+  columns,
+  rows,
+  portfolioId,
+  page,
+  limit,
+}: Props) {
   return (
     <div className="sm:container sm:mx-auto">
       <table className="border-collapse border border-slate-400">
@@ -55,7 +65,12 @@ export default function DataGrid({ columns, rows }: Props) {
                   <span>Showing ....</span>
                 </div>
                 <div className="inline-flex">
-                  <button className="flex items-center justify-center px-3 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                  <Link
+                    href={`/dashboard/${portfolioId}?page=${
+                      page > 1 ? page - 1 : 1
+                    }`}
+                    className="flex items-center justify-center px-3 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  >
                     <svg
                       className="w-3.5 h-3.5 mr-2"
                       aria-hidden="true"
@@ -72,8 +87,12 @@ export default function DataGrid({ columns, rows }: Props) {
                       />
                     </svg>
                     Prev
-                  </button>
-                  <button className="flex items-center justify-center px-3 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                  </Link>
+
+                  <Link
+                    href={`/dashboard/${portfolioId}?page=${page + 1}`}
+                    className="flex items-center justify-center px-3 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  >
                     Next
                     <svg
                       className="w-3.5 h-3.5 ml-2"
@@ -90,7 +109,7 @@ export default function DataGrid({ columns, rows }: Props) {
                         d="M1 5h12m0 0L9 1m4 4L9 9"
                       />
                     </svg>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </td>

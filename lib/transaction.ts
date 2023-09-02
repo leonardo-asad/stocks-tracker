@@ -2,10 +2,20 @@ import prisma from "./prisma";
 import { TransactionForm } from "@/types/types";
 import type { Holdings } from "@/types/types";
 
-export const getTransactions = async (portfolioId: string) => {
+export const getTransactions = async (
+  portfolioId: string,
+  page: number = 1,
+  limit: number = 10
+) => {
+  const skip = limit * (page - 1);
   const transactions = prisma.transaction.findMany({
+    skip,
+    take: limit,
     where: {
       portfolioId,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
