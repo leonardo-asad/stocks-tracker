@@ -21,7 +21,7 @@ export default async function DashboardPage({
 
   const columns: Column[] = [
     { id: "action", label: "Transaction Type" },
-    { id: "createdAt", label: "Date" },
+    { id: "createdAt", label: "Date (dd/mm/yyyy hh:mm)" },
     { id: "quantity", label: "Shares" },
     { id: "price", label: "Purchase / Sale Price $" },
     { id: "commission", label: "Commission" },
@@ -54,14 +54,6 @@ export default async function DashboardPage({
       <h1 className="font-bold">Portfolio id: {params.id}</h1>
       <br />
       <h3 className="font-bold">Transactions</h3>
-      <ul>
-        {transactions.map((transaction) => (
-          <li key={transaction.id}>
-            Ticker: ${transaction.ticker}, Price: ${transaction.price},
-            Quantity: ${transaction.quantity}
-          </li>
-        ))}
-      </ul>
       <br />
       <DataGrid columns={columns} rows={getRows(transactions)} />
 
