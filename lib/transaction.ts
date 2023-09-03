@@ -8,18 +8,24 @@ export const getTransactions = async (
   limit: number = 10
 ) => {
   const skip = limit * (page - 1);
-  const transactions = prisma.transaction.findMany({
-    skip,
-    take: limit,
-    where: {
-      portfolioId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  const [transactions, totalTransactions] = await prisma.$transaction([
+    prisma.transaction.findMany({
+      skip,
+      take: limit,
+      where: {
+        portfolioId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    }),
+    prisma.transaction.count(),
+  ]);
 
-  return transactions;
+  return {
+    transactions,
+    totalTransactions,
+  };
 };
 
 export const createTransaction = async (data: TransactionForm) => {

@@ -13,11 +13,15 @@ export default async function DashboardPage({
   //pagination
   const page = searchParams.page ? Number(searchParams.page) : 1;
 
-  console.log("page: ", page);
+  //console.log("page: ", page);
   const limit = 10;
 
   const portfolioId = params.id as string;
-  const transactions = await getTransactions(portfolioId, page, limit);
+  const { transactions, totalTransactions } = await getTransactions(
+    portfolioId,
+    page,
+    limit
+  );
   const holdings = await getHoldings(portfolioId);
 
   interface Column {
@@ -69,6 +73,7 @@ export default async function DashboardPage({
         portfolioId={portfolioId}
         page={page}
         limit={limit}
+        totalTransactions={totalTransactions}
       />
 
       <br />
