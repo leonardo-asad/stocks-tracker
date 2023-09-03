@@ -19,7 +19,11 @@ export const getTransactions = async (
         createdAt: "desc",
       },
     }),
-    prisma.transaction.count(),
+    prisma.transaction.count({
+      where: {
+        portfolioId,
+      },
+    }),
   ]);
 
   return {
