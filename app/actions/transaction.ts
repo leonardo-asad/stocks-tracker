@@ -3,7 +3,7 @@
 import { zfd } from "zod-form-data";
 import { z } from "zod";
 import type { Holdings } from "@/types/types";
-import { createTransaction } from "@/lib/transaction";
+import { createTransaction, deleteTransaction } from "@/lib/transaction";
 import { revalidatePath } from "next/cache";
 import { ZodError } from "zod";
 
@@ -51,6 +51,27 @@ export async function addTransaction(
 
     return { message: "Success!" };
   } catch (e) {
+    if (e instanceof ZodError) {
+      console.log("error: ", e.message);
+      return { message: "There was a validation error." };
+    } else {
+      return { message: "There was a validation error." };
+    }
+  }
+}
+
+export async function removeTransaction(formData: FormData) {
+  try {
+    const schema = zfd.formData({
+      id: zfd.text(),
+    });
+
+    const { id } = schema.parse(formData);
+    await deleteTransaction(id);
+    revalidatePath("/dashboard/[id]");
+    return { message: "Success!" };
+  } catch (e) {
+    console.log(e);
     if (e instanceof ZodError) {
       console.log("error: ", e.message);
       return { message: "There was a validation error." };

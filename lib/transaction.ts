@@ -40,6 +40,16 @@ export const createTransaction = async (data: TransactionForm) => {
   return newTransaction;
 };
 
+export const deleteTransaction = async (transactionId: string) => {
+  const deleteTransaction = prisma.transaction.delete({
+    where: {
+      id: transactionId,
+    },
+  });
+
+  return deleteTransaction;
+};
+
 export const getHoldings = async (portfolioId: string) => {
   return prisma.transaction.groupBy({
     by: ["ticker"],

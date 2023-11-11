@@ -46,6 +46,8 @@ export default async function DashboardPage({
       row[column.id] = transaction[column.id];
     }
 
+    row["id"] = transaction["id"];
+
     return row;
   }
 
