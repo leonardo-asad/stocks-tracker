@@ -50,7 +50,7 @@ export async function addTransaction(
       userId,
     });
 
-    revalidatePath("/dashboard/[id]");
+    revalidatePath("/dashboard/[id]", "page");
 
     return { message: "Success!" };
   } catch (e) {
@@ -71,7 +71,7 @@ export async function removeTransaction(formData: FormData) {
 
     const { id } = schema.parse(formData);
     await deleteTransaction(id);
-    revalidatePath("/dashboard/[id]");
+    revalidatePath("/dashboard/[id]", "page");
     return { message: "Success!" };
   } catch (e) {
     console.log(e);
