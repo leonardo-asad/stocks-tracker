@@ -6,7 +6,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 import { LogoutButton } from "./button.components";

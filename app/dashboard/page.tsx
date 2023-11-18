@@ -23,13 +23,14 @@ export default async function DashboardPage({
   const page = searchParams.page ? Number(searchParams.page) : 1;
 
   //console.log("page: ", page);
-  const limit = 10;
+  const limit = 5;
 
   const { transactions, totalTransactions } = await getTransactions(
     session.user.id,
     page,
     limit
   );
+
   const holdings = await getHoldings(session.user.id);
 
   interface Column {
