@@ -3,7 +3,7 @@ import { TransactionForm } from "@/types/types";
 import type { Holdings } from "@/types/types";
 
 export const getTransactions = async (
-  portfolioId: string,
+  userId: string,
   page: number = 1,
   limit: number = 10
 ) => {
@@ -13,7 +13,7 @@ export const getTransactions = async (
       skip,
       take: limit,
       where: {
-        portfolioId,
+        userId,
       },
       orderBy: {
         createdAt: "desc",
@@ -21,7 +21,7 @@ export const getTransactions = async (
     }),
     prisma.transaction.count({
       where: {
-        portfolioId,
+        userId,
       },
     }),
   ]);
@@ -50,11 +50,11 @@ export const deleteTransaction = async (transactionId: string) => {
   return deleteTransaction;
 };
 
-export const getHoldings = async (portfolioId: string) => {
+export const getHoldings = async (userId: string) => {
   return prisma.transaction.groupBy({
     by: ["ticker"],
     where: {
-      portfolioId,
+      userId,
     },
     _sum: {
       quantity: true,

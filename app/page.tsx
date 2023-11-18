@@ -1,19 +1,15 @@
-import { LoginButton, LogoutButton } from "@/components/button.components";
-import Link from "next/link";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
-  return (
-    <div>
-      <h1>Hello, Home Page!</h1>
-      <LoginButton />
-      <Link href="/register" style={{ marginRight: 10 }}>
-        Register
-      </Link>
-      <LogoutButton />
-      <Link style={{ marginRight: 10 }} href="/profile">
-        Profile
-      </Link>
-      <Link href="/dashboard">Dashboard</Link>
-    </div>
-  );
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/api/auth/signin");
+  } else {
+    redirect("/dashboard");
+  }
+
+  return null;
 }

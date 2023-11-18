@@ -46,41 +46,31 @@ model VerificationToken {
 }
 
 model User {
-  id           String      @id @default(cuid())
-  createdAt    DateTime    @default(now())
+  id           String        @id @default(cuid())
+  createdAt    DateTime      @default(now())
   firstName    String
   lastName     String
-  email        String      @unique
+  email        String        @unique
   image        String?
   passwordHash String
-  role         Role        @default(USER)
-  portfolios   Portfolio[]
+  role         Role          @default(USER)
   accounts     Account[]
   sessions     Session[]
-}
-
-model Portfolio {
-  id           String        @id @default(cuid())
-  name         String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  author       User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId     String
   transactions Transaction[]
 }
 
 model Transaction {
-  id          String    @id @default(cuid())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  action      String
-  ticker      String
-  quantity    Float
-  price       Float
-  currency    String    @default("USD")
-  commission  Float     @default(0.0)
-  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
-  portfolioId String
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  action     String
+  ticker     String
+  quantity   Float
+  price      Float
+  currency   String   @default("USD")
+  commission Float    @default(0.0)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
 }
 
 enum Role {

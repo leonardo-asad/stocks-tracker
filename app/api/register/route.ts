@@ -5,8 +5,8 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const { firstName, lastName, email, password } = (await req.json()) as {
-      firstName?: string;
-      lastName?: string;
+      firstName: string;
+      lastName: string;
       email: string;
       password: string;
     };
@@ -18,9 +18,6 @@ export async function POST(req: Request) {
         lastName,
         email: email.toLowerCase(),
         passwordHash,
-        portfolios: {
-          create: [{ name: "My Portfolio" }],
-        },
       },
     });
 

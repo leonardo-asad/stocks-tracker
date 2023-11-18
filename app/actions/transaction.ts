@@ -9,21 +9,22 @@ import { ZodError } from "zod";
 
 export async function addTransaction(
   formData: FormData,
-  portfolioId: string,
+  userId: string,
   holdings: Holdings
 ) {
   try {
     const schema = zfd.formData({
       ticker: zfd.text(),
       quantity: zfd.numeric(z.number()),
-      price: zfd.numeric(z.number().multipleOf(0.01)),
-      action: zfd.text(),
+      price: zfd.numeric(z.number().multipleOf(0.01).min(0.01)),
       currency: zfd.text(),
-      commission: zfd.numeric(z.number().multipleOf(0.01)),
+      commission: zfd.numeric(z.number().multipleOf(0.01).min(0.0)),
     });
 
-    const { ticker, quantity, price, action, currency, commission } =
+    const { ticker, quantity, price, currency, commission } =
       schema.parse(formData);
+
+    const action = quantity > 0 ? "Buy" : "Sell";
 
     if (quantity < 0) {
       const item = holdings.find((holding) => holding.ticker === ticker);
@@ -37,14 +38,16 @@ export async function addTransaction(
       }
     }
 
+    const tickerUppercase = ticker.toUpperCase();
+
     await createTransaction({
-      ticker,
+      ticker: tickerUppercase,
       quantity,
       price,
       action,
       currency,
       commission,
-      portfolioId,
+      userId,
     });
 
     revalidatePath("/dashboard/[id]");

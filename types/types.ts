@@ -1,14 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { getHoldings } from "@/lib/transaction";
 
-const createPortfolioForm = Prisma.validator<Prisma.PortfolioDefaultArgs>()({
-  select: { name: true, authorId: true },
-});
-
-export type PortfolioForm = Prisma.PortfolioGetPayload<
-  typeof createPortfolioForm
->;
-
 const createTransactionForm = Prisma.validator<Prisma.TransactionDefaultArgs>()(
   {
     select: {
@@ -18,7 +10,7 @@ const createTransactionForm = Prisma.validator<Prisma.TransactionDefaultArgs>()(
       price: true,
       currency: true,
       commission: true,
-      portfolioId: true,
+      userId: true,
     },
   }
 );

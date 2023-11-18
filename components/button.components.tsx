@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { signIn, signOut } from "next-auth/react";
 
 export const LoginButton = () => {
@@ -17,10 +18,10 @@ export const LoginButton = () => {
   );
 };
 
-export const LogoutButton = () => {
+export const LogoutButton = ({ children }: { children: React.ReactNode }) => {
   return (
-    <button style={{ marginRight: 10 }} onClick={() => signOut()}>
-      Sign Out
+    <button className="w-full" onClick={() => signOut()}>
+      {children}
     </button>
   );
 };
