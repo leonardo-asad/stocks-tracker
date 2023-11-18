@@ -1,15 +1,12 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import Header from "@/components/header";
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    redirect("/api/auth/signin");
-  } else {
-    redirect("/dashboard");
-  }
-
-  return null;
+  return (
+    <>
+      <Header />
+      <div className="mt-8">
+        <h1 className="text-center">Welcome to the my new App!</h1>
+      </div>
+    </>
+  );
 }
