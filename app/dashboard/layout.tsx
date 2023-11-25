@@ -21,9 +21,7 @@ export default async function DashboardLayout({
       <div className="hidden flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
-            <h1 className="text-xl font-bold tracking-widest">
-              Stock Investments
-            </h1>
+            <h1 className="text-xl font-bold tracking-widest">Stock Tracker</h1>
             <div className="ml-auto flex items-center space-x-4">
               <UserNav
                 image={session.user.image}
