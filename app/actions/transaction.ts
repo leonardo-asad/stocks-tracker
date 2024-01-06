@@ -7,6 +7,14 @@ import { createTransaction, deleteTransaction } from "@/lib/transaction";
 import { revalidatePath } from "next/cache";
 import { ZodError } from "zod";
 
+/**
+ * Adds a transaction to the portfolio.
+ *
+ * @param formData - The form data containing the transaction details.
+ * @param userId - The ID of the user performing the transaction.
+ * @param holdings - The current holdings in the portfolio.
+ * @returns An object with a success message if the transaction is added successfully, or an error message if there is a validation error or insufficient balance.
+ */
 export async function addTransaction(
   formData: FormData,
   userId: string,
@@ -27,7 +35,9 @@ export async function addTransaction(
     const action = quantity > 0 ? "Buy" : "Sell";
 
     if (quantity < 0) {
-      const item = holdings.find((holding) => holding.ticker === ticker);
+      const item = holdings.find(
+        (holding) => holding.ticker === ticker.toUpperCase()
+      );
 
       if (item) {
         const balance = item?._sum.quantity;
@@ -63,6 +73,12 @@ export async function addTransaction(
   }
 }
 
+/**
+ * Removes a transaction from the database.
+ *
+ * @param formData - The form data containing the transaction ID.
+ * @returns A promise that resolves to an object with a success message or an error message.
+ */
 export async function removeTransaction(formData: FormData) {
   try {
     const schema = zfd.formData({
