@@ -99,28 +99,6 @@ export default function TransactionForm({
           </Form.Control>
         </Form.Field>
 
-        <Form.Field name="currency">
-          <div className="flex items-baseline justify-between">
-            <Form.Label className="text-[15px] font-medium leading-[35px] text-black">
-              Currency
-            </Form.Label>
-            <Form.Message
-              className="text-[10px] text-black opacity-[0.8]"
-              match="valueMissing"
-            >
-              Please enter the Currency
-            </Form.Message>
-          </div>
-          <Form.Control asChild>
-            <input
-              className="box-border w-full bg-blackA2 shadow-blackA6 inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none text-black shadow-[0_0_0_1px] outline-none hover:shadow-[0_0_0_1px_black] focus:shadow-[0_0_0_2px_black] selection:color-white selection:bg-blackA6"
-              type="text"
-              required
-              defaultValue={"USD"}
-            />
-          </Form.Control>
-        </Form.Field>
-
         <Form.Field name="commission">
           <div className="flex items-baseline justify-between">
             <Form.Label className="text-[15px] font-medium leading-[35px] text-black">
@@ -143,7 +121,29 @@ export default function TransactionForm({
             />
           </Form.Control>
         </Form.Field>
+
+        <Form.Field name="date">
+          <div className="flex items-baseline justify-between">
+            <Form.Label className="text-[15px] font-medium leading-[35px] text-black">
+              Date
+            </Form.Label>
+            <Form.Message
+              className="text-[10px] text-black opacity-[0.8]"
+              match="valueMissing"
+            >
+              Please enter the Date
+            </Form.Message>
+          </div>
+          <Form.Control asChild>
+            <input
+              className="box-border w-full bg-blackA2 shadow-blackA6 inline-flex h-[35px] appearance-none items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none text-black shadow-[0_0_0_1px] outline-none hover:shadow-[0_0_0_1px_black] focus:shadow-[0_0_0_2px_black] selection:color-white selection:bg-blackA6"
+              type="date"
+              required
+            />
+          </Form.Control>
+        </Form.Field>
       </div>
+
       <div className="my-4">
         <Form.Submit asChild>
           <button className="box-border w-full shadow-blackA4 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px] border border-black">

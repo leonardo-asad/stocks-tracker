@@ -25,11 +25,11 @@ export async function addTransaction(
       ticker: zfd.text(),
       quantity: zfd.numeric(z.number()),
       price: zfd.numeric(z.number().multipleOf(0.01).min(0.01)),
-      currency: zfd.text(),
       commission: zfd.numeric(z.number().multipleOf(0.01).min(0.0)),
+      date: zfd.text(),
     });
 
-    const { ticker, quantity, price, currency, commission } =
+    const { ticker, quantity, price, commission, date } =
       schema.parse(formData);
 
     const action = quantity > 0 ? "Buy" : "Sell";
@@ -55,9 +55,9 @@ export async function addTransaction(
       quantity,
       price,
       action,
-      currency,
       commission,
       userId,
+      date: new Date(date),
     });
 
     revalidatePath("/dashboard/[id]", "page");

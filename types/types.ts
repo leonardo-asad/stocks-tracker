@@ -8,9 +8,9 @@ const createTransactionForm = Prisma.validator<Prisma.TransactionDefaultArgs>()(
       ticker: true,
       quantity: true,
       price: true,
-      currency: true,
       commission: true,
       userId: true,
+      date: true,
     },
   }
 );
