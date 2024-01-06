@@ -48,12 +48,7 @@ export const RegisterForm = () => {
   return (
     <Form.Root
       onSubmit={onSubmit}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: 500,
-        rowGap: 10,
-      }}
+      className="flex flex-col w-[350px] md:w-[500px]  row-gap-[10px]"
       autoComplete="off"
     >
       <Form.Field name="firstName">
@@ -150,7 +145,7 @@ export const RegisterForm = () => {
 
       <Form.Submit asChild>
         <button
-          className="box-border w-full shadow-blackA4 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[20px] border border-black"
+          className="box-border w-full shadow-blackA4 inline-flex h-[50px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[40px] border border-black"
           disabled={loading}
         >
           {loading ? "loading..." : "Register"}
