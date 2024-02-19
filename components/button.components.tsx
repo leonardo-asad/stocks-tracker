@@ -3,6 +3,7 @@
 import React from "react";
 import { signIn, signOut } from "next-auth/react";
 
+// Login
 export const LoginButton = ({ children }: { children: React.ReactNode }) => {
   return (
     <button
